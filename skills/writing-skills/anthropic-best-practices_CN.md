@@ -1056,7 +1056,10 @@ Use the BigQuery:bigquery_schema tool to retrieve table schemas.
 Use the GitHub:create_issue tool to create issues.
 ```
 
-其中 `BigQuery` 和 `GitHub` 是 MCP 服务器名称，`bigquery_schema` 和 `create_issue` 是服务器中的工具名称。
+其中：
+
+* `BigQuery` 和 `GitHub` 是 MCP 服务器名称
+* `bigquery_schema` 和 `create_issue` 是这些服务器中的工具名称
 
 如果没有服务器前缀，尤其是在有多个 MCP 服务器可用时，代理可能无法定位工具。
 

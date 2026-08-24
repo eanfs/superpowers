@@ -12,7 +12,7 @@ multi_agent = true
 - **派生：**使用 `spawn_agent {fork_turns: "none"}` 为子 agent 提供干净的上下文；默认值 `"all"` 会将完整的对话记录复制给子 agent。在 Codex 0.145+ 中，`~/.codex/agents/` 下的角色文件会通过 `agent_type` 附加到隔离 fork。完整历史 fork 接受 `model` 和 `reasoning_effort` 覆盖（只会拒绝 `agent_type`）——隔离 fork 是 SDD 的默认设置，原因是上下文卫生，而不是因为覆盖项需要它们。
 - **修复轮次：**使用 `followup_task` 恢复实现者——它会传递你的消息、触发一轮操作，并透明地重新加载被 harness 驱逐的子 agent。不要因为认为派生出的 agent 无法再次接收消息，就重新派发一个实现者；在 V2 中，它始终可以再次接收消息。
 - **生命周期：**V2 没有 `close_agent`。当需要槽位时，已完成的子 agent 会自动被驱逐；不关闭它们不会产生任何成本。只有 V1 会话有 `close_agent`——在那里，当审查者返回后关闭它们，并在每个实现者通过审查后关闭它。
-- **模型名称：**每次调用 `spawn_agent`——包括你自己作为派生子 agent运行并进行扇出时——都要根据正在执行的技能的模型选择规则，明确设置 `model` 和 `reasoning_effort`。只设置 `model` 是个陷阱：子 agent 的 effort 会静默地重置为该模型的默认值，而不是继承你的设置。
+- **模型名称：**绝不要在没有对照你当前的派生允许清单（spawn allowlist）核验的情况下，把来自技能、表格或旧会话的模型名称复制进 `spawn_agent`——V2 只接受具备 V2 能力的预设，对其余预设会直接报错。
 
 ## 等待子 agent
 
