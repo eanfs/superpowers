@@ -388,7 +388,6 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 - 不适用于“文档更新”
 - 不要保留未经测试的变更作为“参考”
 - 不要在编写测试时“顺便适配”
-- 不要看它
 - 删除就是删除
 
 **必需背景：**superpowers:test-driven-development 技能解释了为什么这很重要。同样的原则适用于文档。
