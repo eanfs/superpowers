@@ -1,5 +1,5 @@
 ---
-name: to-spec
+name: scrum-spec
 description: Use after superpowers:writing-plans has produced an implementation plan, to turn that plan into a scrum story (user stories plus test scope) derived entirely from the plan and publish it to GitHub or GitLab
 ---
 
@@ -7,9 +7,9 @@ description: Use after superpowers:writing-plans has produced an implementation 
 
 Turn a written implementation plan into a scrum story issue. Run this AFTER `superpowers:writing-plans` — the plan (`docs/superpowers/plans/YYYY-MM-DD-<feature>.md`) is the single source of truth: derive the user stories and the testing scope entirely from the plan's content. Do NOT invent scope the plan does not contain; do NOT re-interview the user. Anything the plan leaves ambiguous goes into Further Notes.
 
-**Announce at start:** "I'm using the to-spec skill to turn the plan into a story."
+**Announce at start:** "I'm using the scrum-spec skill to turn the plan into a story."
 
-The story you publish is the parent issue `superpowers:to-tickets` breaks into tickets.
+The story you publish is the parent issue `superpowers:scrum-tickets` breaks into tickets.
 
 ## Tracker
 
@@ -50,7 +50,7 @@ Label creation must be idempotent: `gh label create "<name>" --force` (create-or
 4. Write the story body to a scratch file (`.scratch/spec.md`), then publish it as one issue with the feature name as the title, labeled `type::story` + `S1-Todo` plus the confirmed labels. Delete the scratch file after publishing:
    - **GitLab:** `glab issue create --title "<feature>" --description "$(cat .scratch/spec.md)" -l "type::story" -l "S1-Todo"`.
    - **GitHub:** `gh issue create --title "<feature>" --body-file .scratch/spec.md -l "type::story" -l "S1-Todo"`.
-   - Report the issue URL to the user. That issue is what `to-tickets` takes as its parent.
+   - Report the issue URL to the user. That issue is what `scrum-tickets` takes as its parent.
 
 <spec-template>
 

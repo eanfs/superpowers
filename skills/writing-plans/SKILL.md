@@ -160,7 +160,7 @@ After saving the plan, offer execution choice:
 
 **2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
 
-**3. Publish to tracker (optional)** - Turn the plan into tracker issues: `superpowers:to-spec` publishes the story, `superpowers:to-tickets` publishes one issue per task verbatim (GitHub/GitLab). Track the work there instead of, or before, executing here
+**3. Publish to tracker (optional)** - Turn the plan into tracker issues: `superpowers:scrum-spec` publishes the story, `superpowers:scrum-tickets` publishes one issue per task verbatim (GitHub/GitLab). Track the work there instead of, or before, executing here
 
 **Which approach?"**
 
@@ -170,7 +170,7 @@ After saving the plan, offer execution choice:
 - Fresh subagent per task + two-stage review
 
 **If Publish to tracker chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:to-spec (story issue), then superpowers:to-tickets (one issue per plan task)
+- **REQUIRED SUB-SKILL:** Use superpowers:scrum-spec (story issue), then superpowers:scrum-tickets (one issue per plan task)
 
 **If Inline Execution chosen:**
 - **REQUIRED SUB-SKILL:** Use superpowers:executing-plans

@@ -1,5 +1,5 @@
 ---
-name: to-tickets
+name: scrum-tickets
 description: Use after superpowers:writing-plans has produced an implementation plan, to publish each plan task verbatim as a ticket issue on GitHub or GitLab with blocking edges from the plan's task order
 ---
 
@@ -7,9 +7,9 @@ description: Use after superpowers:writing-plans has produced an implementation 
 
 Turn a superpowers plan into **tickets**: one issue per plan task, carrying the task's content **verbatim**. The plan (`docs/superpowers/plans/YYYY-MM-DD-<feature>.md`, produced by `superpowers:writing-plans`) is the single source of truth — never rewrite, merge, or re-decompose its tasks.
 
-**Announce at start:** "I'm using the to-tickets skill to publish the plan tasks as tickets."
+**Announce at start:** "I'm using the scrum-tickets skill to publish the plan tasks as tickets."
 
-Run this after `superpowers:writing-plans` (and optionally after `superpowers:to-spec` published the plan's story — that story issue is the natural parent).
+Run this after `superpowers:writing-plans` (and optionally after `superpowers:scrum-spec` published the plan's story — that story issue is the natural parent).
 
 ## Tracker
 
@@ -65,7 +65,7 @@ Iterate until the user approves. Do not offer to merge or split tasks — that w
 
 Publish the approved tickets in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers.
 
-**Parent first.** If the source plan's story was published (e.g. by `superpowers:to-spec`), that existing story issue is the parent — use it as-is. Otherwise publish the plan itself as the parent issue (full plan body on GitHub/GitLab; title + link locally) labeled `type::story` + `S1-Todo`. Reference the parent in every ticket. Do NOT close or modify any pre-existing parent issue.
+**Parent first.** If the source plan's story was published (e.g. by `superpowers:scrum-spec`), that existing story issue is the parent — use it as-is. Otherwise publish the plan itself as the parent issue (full plan body on GitHub/GitLab; title + link locally) labeled `type::story` + `S1-Todo`. Reference the parent in every ticket. Do NOT close or modify any pre-existing parent issue.
 
 - **GitHub** → `gh issue create --title ... --body-file ...` per ticket, labeled `type::task` + `S1-Todo` (plus inherited `P*`/`feat::`); create missing labels with `gh label create "<name>" --force` first. To attach a ticket to the parent as a sub-issue (API-only): `gh api repos/$OWNER/$REPO/issues/<parent-number>/sub_issues -F sub_issue_id=$(gh api repos/$OWNER/$REPO/issues/<ticket-number> --jq .id)` — note the sub-issue API needs the child's **database ID**, not its issue number. Otherwise reference the parent and blockers in the "Blocked by" section as `#N`.
 - **GitLab** → `glab issue create --title ... --description ...` per ticket, `-l "type::task" -l "S1-Todo"` (plus inherited labels); check `glab label list` and create missing labels with `glab label create -n "<name>"`. Prefer the native blocked-by relationship: `glab api "projects/:id/issues/<ticket-iid>/links" -f target_issue_iid=<blocker-iid> -f link_type=is_blocked_by` (the current issue is blocked by the target); otherwise list blockers in the "Blocked by" section.
