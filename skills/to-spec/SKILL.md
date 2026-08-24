@@ -23,15 +23,15 @@ If both CLIs are available and the remote does not disambiguate, ask which track
 
 ## Scrum labels
 
-Apply the project's Scrum label vocabulary (the team's board convention, e.g. the GitLab CE label set):
+Apply the project's Scrum label vocabulary (the team's board convention; English set shown):
 
 | Kind | Labels | Rule |
 |------|--------|------|
-| Status (board column) | `S1-待办` `S2-进行中` `S3-评审` `S4-完成` (or the team's English equivalents) | exactly one, always the current state |
+| Status (board column) | `S1-Todo` `S2-InProgress` `S3-Review` `S4-Done` | exactly one, always the current state |
 | Type | `type::story` `type::task` `type::bug` `type::spike` `type::test-case` | this skill always publishes `type::story` |
-| Priority | `P0-紧急` `P1-高` `P2-中` `P3-低` | at most one |
+| Priority | `P0-Urgent` `P1-High` `P2-Medium` `P3-Low` | at most one |
 | Story points | `SP-1` `SP-2` `SP-3` `SP-5` `SP-8` `SP-13` | exactly one on a story, agreed with the user |
-| Module grouping | `feat::<module>` (e.g. `feat::核心引擎`) | when the module is determinable |
+| Module grouping | `feat::<module>` (e.g. `feat::core-engine`) | when the module is determinable |
 
 Label creation must be idempotent: `gh label create "<name>" --force` (create-or-update), or for glab check `glab label list` first and treat "already exists" as success. Never fall back to publishing without a mandated label. Do NOT set a Sprint milestone: issues stay in the backlog; sprint assignment happens in Sprint Planning.
 
@@ -47,9 +47,9 @@ Label creation must be idempotent: `gh label create "<name>" --force` (create-or
 
 3. Confirm the seams with the user: the seams at which the plan tests each task (existing seams the plan reuses beat new ones). In the same checkpoint, propose the story's Scrum labels — `SP-*` point estimate (size it from the plan's task count and weight), `P*` priority (if the conversation made it clear), `feat::<module>` grouping (from the plan's file structure) — and take what they confirm.
 
-4. Write the story body to a scratch file (`.scratch/spec.md`), then publish it as one issue with the feature name as the title, labeled `type::story` + `S1-待办` plus the confirmed labels. Delete the scratch file after publishing:
-   - **GitLab:** `glab issue create --title "<feature>" --description "$(cat .scratch/spec.md)" -l "type::story" -l "S1-待办"`.
-   - **GitHub:** `gh issue create --title "<feature>" --body-file .scratch/spec.md -l "type::story" -l "S1-待办"`.
+4. Write the story body to a scratch file (`.scratch/spec.md`), then publish it as one issue with the feature name as the title, labeled `type::story` + `S1-Todo` plus the confirmed labels. Delete the scratch file after publishing:
+   - **GitLab:** `glab issue create --title "<feature>" --description "$(cat .scratch/spec.md)" -l "type::story" -l "S1-Todo"`.
+   - **GitHub:** `gh issue create --title "<feature>" --body-file .scratch/spec.md -l "type::story" -l "S1-Todo"`.
    - Report the issue URL to the user. That issue is what `to-tickets` takes as its parent.
 
 <spec-template>
