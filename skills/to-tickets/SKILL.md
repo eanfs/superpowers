@@ -21,6 +21,20 @@ Publish to the project's issue tracker. Detect it; do not ask unless ambiguous:
 
 If both CLIs are available and the remote does not disambiguate, ask which tracker to use.
 
+## Scrum labels
+
+Apply the project's Scrum label vocabulary (the team's board convention, e.g. the GitLab CE label set):
+
+| Kind | Labels | Rule |
+|------|--------|------|
+| Status (board column) | `S1-待办` `S2-进行中` `S3-评审` `S4-完成` (or the team's English equivalents) | exactly one, always the current state; tickets are born `S1-待办` |
+| Type | `type::story` `type::task` `type::bug` `type::spike` `type::test-case` | the parent story/spec issue is `type::story`; each ticket is `type::task` |
+| Priority | `P0-紧急` `P1-高` `P2-中` `P3-低` | inherit from the parent story unless the user says otherwise |
+| Story points | `SP-1` `SP-2` `SP-3` `SP-5` `SP-8` `SP-13` | the parent story carries the estimate; do not SP-label individual tickets unless the user asks |
+| Module grouping | `feat::<module>` (e.g. `feat::核心引擎`) | inherit from the parent story |
+
+If a label is missing on the tracker, create it on the fly (`glab label create` / `gh label create`) or skip silently. Do NOT set a Sprint milestone: tickets stay in the backlog; sprint assignment happens in Sprint Planning.
+
 ## Process
 
 ### 1. Gather context
@@ -70,13 +84,13 @@ Iterate until the user approves the breakdown.
 
 Publish the approved tickets in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers.
 
-**Parent first.** If the source was a superpowers plan or an existing issue/spec, publish it as the parent issue (full plan body on GitHub/GitLab; title + link locally) and reference it in every ticket. Do NOT close or modify any pre-existing parent issue.
+**Parent first.** If the source was a superpowers plan or an existing issue/spec, publish it as the parent issue (full plan body on GitHub/GitLab; title + link locally) and reference it in every ticket. Label the parent `type::story` + `S1-待办` (plus its `SP-*`/`P*`/`feat::` labels if known). Do NOT close or modify any pre-existing parent issue.
 
-- **GitHub** → `gh issue create --title ... --body-file ...` per ticket. Apply the `ready-for-agent` label if it exists; create it (`gh label create ready-for-agent`) or skip silently. Where the platform offers a native relationship, prefer it: attach each ticket to the parent as a sub-issue; otherwise list blockers in the "Blocked by" section as issue references (`#N`).
-- **GitLab** → `glab issue create --title ... --description ...` per ticket, `-l ready-for-agent` if the label exists. Prefer the native blocked-by relationship: `glab api "projects/:id/issues/<ticket-iid>/links" -f target_issue_iid=<blocker-iid> -f link_type=is_blocked_by` (the current issue is blocked by the target); otherwise list blockers in the "Blocked by" section.
+- **GitHub** → `gh issue create --title ... --body-file ...` per ticket, labeled `type::task` + `S1-待办` (plus inherited `P*`/`feat::`); create missing labels with `gh label create "<name>"` first. Where the platform offers a native relationship, prefer it: attach each ticket to the parent as a sub-issue; otherwise list blockers in the "Blocked by" section as issue references (`#N`).
+- **GitLab** → `glab issue create --title ... --description ...` per ticket, `-l "type::task" -l "S1-待办"` (plus inherited labels); create missing labels with `glab label create -n "<name>"` first. Prefer the native blocked-by relationship: `glab api "projects/:id/issues/<ticket-iid>/links" -f target_issue_iid=<blocker-iid> -f link_type=is_blocked_by` (the current issue is blocked by the target); otherwise list blockers in the "Blocked by" section.
 - **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first), plus a `00-parent.md` holding the plan/spec. Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
 
-The tickets are agent-grabbable by construction. Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
+Tickets are born grabbable: `S1-待办` means an agent or a developer can pick one off the frontier. Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
 
 <local-ticket-template>
 
@@ -86,7 +100,7 @@ The tickets are agent-grabbable by construction. Work the **frontier**: any tick
 
 **Blocked by:** the numbers/titles of the tickets that gate this one, or "None (can start immediately)".
 
-**Status:** ready-for-agent
+**Status:** S1-待办
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2
