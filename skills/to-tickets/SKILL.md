@@ -73,6 +73,18 @@ Publish the approved tickets in dependency order (blockers first) so each ticket
 
 Tickets are born grabbable: `S1-Todo` means an agent or a developer can pick one off the frontier. Work the **frontier**: any ticket whose blockers are all done. For a strictly sequential plan that means top to bottom.
 
+## Ticket lifecycle
+
+Whoever works a ticket owns its status label — the board column is the single source of execution state:
+
+| Moment | Action |
+|--------|--------|
+| Picking up a ticket | replace `S1-Todo` with `S2-InProgress` (`gh issue edit <N> --remove-label S1-Todo --add-label S2-InProgress` / `glab issue update <iid> -S` style edits) |
+| PR/MR opened for the ticket | `S2-InProgress` → `S3-Review` |
+| PR/MR merged, criteria checked | `S3-Review` → `S4-Done`, tick the ticket's acceptance checkboxes |
+
+**Reconciliation with the plan file:** tickets and plan checkboxes track the same tasks. The tracker is the live state; the plan file is the record. When a ticket reaches `S4-Done`, tick the corresponding task's checkbox in the plan file (one commit at the end of the feature, not per ticket). Never let the two disagree for long — a disagreement means someone skipped the lifecycle.
+
 <local-ticket-template>
 
 # <NN>: <verbatim plan task heading>
@@ -106,6 +118,10 @@ The plan task's complete content, copied word-for-word from the plan — descrip
 ## Blocked by
 
 - A reference to each blocking ticket, or "None (can start immediately)".
+
+## Workflow
+
+Start → swap `S1-Todo` for `S2-InProgress`; PR/MR opened → `S3-Review`; merged → `S4-Done` and tick the checkboxes.
 
 </issue-template>
 
